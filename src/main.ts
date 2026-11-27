@@ -6,7 +6,7 @@ import { BoardTexture } from './board';
 import { createBoard, createDart, createRedPanda, createRoom, createStand, DART_TIP } from './scene';
 import {
   BOARD_CENTER, BOARD_R, FACE_Z, SHAKE, aimFromSwipe, gauss, planTrajectory, positionAt, stopTime,
-  swipePower, velocityAt, worldToBoard, type Difficulty, type Swipe, type Trajectory,
+  swipePower, velocityAt, type Difficulty, type Swipe, type Trajectory,
 } from './physics';
 import { playThud, playWhoosh, setSound, unlockAudio } from './audio';
 import { makeShareImage } from './share';
@@ -353,15 +353,6 @@ async function main() {
   };
   stage.addEventListener('pointerup', release);
   stage.addEventListener('pointercancel', release);
-
-  // 调试/自测接口
-  (window as any).__darts = {
-    launch, judge: (bx: number, by: number) => judge(world, bx, by), get state() { return state; },
-    swipe: (s: Omit<Swipe, 'screenH'>) => ({ power: swipePower({ ...s, screenH: innerHeight }), aim: aimFromSwipe({ ...s, screenH: innerHeight }) }),
-    lastHit: () => ({ board: hitBoard, result: pendingHit && (pendingHit.kind === 'city' ? pendingHit.city.properties.name : pendingHit.kind), world: worldToBoard(hitWorld) }),
-    reset: resetThrow,
-    boardCanvas: boardTex.canvas,
-  };
 
   // ---------------- 主循环 ----------------
   addEventListener('resize', layout);

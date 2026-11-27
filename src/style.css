@@ -1,0 +1,116 @@
+:root {
+  --red: #e2363b;
+  --ink: #18141c;
+  --paper: #fffaf2;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; height: 100%; overflow: hidden;
+  background: #221c27; color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none; -webkit-user-select: none;
+}
+#stage { position: fixed; inset: 0; touch-action: none; }
+#stage canvas { display: block; width: 100%; height: 100%; }
+
+#loading {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  background: #221c27; font-size: 15px; color: #cfc6d6; z-index: 20; transition: opacity .4s;
+}
+#loading.done { opacity: 0; pointer-events: none; }
+
+.credit {
+  position: fixed; top: calc(8px + var(--safe-t)); right: 10px;
+  font-size: 10px; color: rgba(255,255,255,.55); pointer-events: none; z-index: 5;
+}
+
+.hud {
+  position: fixed; top: calc(10px + var(--safe-t)); left: 12px; display: flex; gap: 8px; align-items: center;
+  z-index: 5; transition: opacity .3s;
+}
+.hud.hide { opacity: 0; pointer-events: none; }
+.badge { background: rgba(0,0,0,.35); padding: 6px 12px; border-radius: 99px; font-size: 13px; backdrop-filter: blur(6px); }
+.badge b { color: #ffcf5a; }
+.icon-btn {
+  width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(0,0,0,.35); color: #fff;
+  font-size: 17px; cursor: pointer; backdrop-filter: blur(6px);
+}
+
+/* 往上滑的提示 */
+.hint {
+  position: fixed; left: 50%; bottom: calc(14vh + var(--safe-b)); transform: translateX(-50%);
+  width: 160px; height: 190px; pointer-events: none; z-index: 4; transition: opacity .4s;
+}
+.hint.hide { opacity: 0; }
+.hint-arrow { position: absolute; left: 50%; top: 0; width: 30px; height: 140px; transform: translateX(-50%); opacity: .8; }
+.hint-hand { position: absolute; left: 50%; top: 110px; font-size: 44px; margin-left: -18px; animation: swipe 1.6s ease-in-out infinite; filter: drop-shadow(0 3px 6px rgba(0,0,0,.4)); }
+.hint-text { position: absolute; bottom: -18px; width: 100%; text-align: center; font-size: 14px; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+@keyframes swipe {
+  0% { transform: translateY(20px); opacity: 0; }
+  15% { opacity: 1; }
+  60% { transform: translateY(-90px); opacity: 1; }
+  80%, 100% { transform: translateY(-100px); opacity: 0; }
+}
+
+.toast {
+  position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%) scale(.8);
+  background: rgba(20,16,26,.82); padding: 14px 22px; border-radius: 14px; font-size: 20px; font-weight: 600;
+  opacity: 0; transition: .25s; pointer-events: none; z-index: 8; white-space: nowrap; backdrop-filter: blur(6px);
+}
+.toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+/* 结果 */
+.result { position: fixed; inset: 0; pointer-events: none; z-index: 6; }
+.result[hidden] { display: none; }
+.title-block {
+  position: absolute; top: calc(34px + var(--safe-t)); left: 18px;
+  text-shadow: 0 2px 10px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.6);
+  animation: rise .6s cubic-bezier(.2,.8,.2,1) both .3s;
+}
+.title-block h1 {
+  margin: 0; font-family: "Ma Shan Zheng", "STKaiti", "KaiTi", "Kaiti SC", serif; font-weight: 400;
+  font-size: clamp(48px, 13vw, 84px); line-height: 1.05; letter-spacing: 2px;
+}
+#r-prov { font-family: "Noto Serif SC", serif; font-size: 17px; opacity: .9; margin-top: 4px; letter-spacing: 3px; }
+.card {
+  position: absolute; left: 50%; bottom: calc(14px + var(--safe-b)); transform: translateX(-50%);
+  width: min(560px, calc(100% - 24px)); background: var(--paper); color: var(--ink);
+  border-radius: 18px; padding: 16px 16px 10px; box-shadow: 0 10px 40px rgba(0,0,0,.45);
+  pointer-events: auto; animation: rise .55s cubic-bezier(.2,.8,.2,1) both .5s;
+}
+.card p { margin: 0 0 14px; font-size: 14px; line-height: 1.65; max-height: 24vh; overflow: auto; font-family: "Noto Serif SC", serif; }
+.foot { font-size: 10.5px; color: #8a8290; text-align: center; margin-top: 8px; }
+@keyframes rise { from { opacity: 0; transform: translate(var(--tx, 0), 24px); } }
+.card { --tx: -50%; }
+
+.actions { display: flex; gap: 8px; }
+.btn {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 0 10px;
+  border-radius: 12px; border: 0; font-size: 14.5px; font-weight: 700; white-space: nowrap; cursor: pointer; text-decoration: none;
+  font-family: inherit; transition: transform .1s;
+}
+.btn:active { transform: scale(.96); }
+.actions .btn.white { flex: 1.35; }
+.btn.white { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #ddd4dc; }
+.btn.red { background: var(--red); color: #fff; }
+.btn.black { background: var(--ink); color: #fff; }
+.btn.small { flex: none; height: 34px; font-size: 13px; background: #eee6ee; color: var(--ink); }
+.btn.wide { width: 100%; flex: none; margin-top: 14px; }
+
+dialog {
+  border: 0; border-radius: 18px; padding: 0; background: var(--paper); color: var(--ink);
+  width: min(400px, calc(100% - 32px)); box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+dialog::backdrop { background: rgba(10,6,14,.6); backdrop-filter: blur(3px); }
+#settings form { padding: 18px; }
+#settings h2 { margin: 0 0 12px; font-size: 18px; }
+fieldset { border: 1px solid #e4dbe3; border-radius: 12px; display: flex; gap: 14px; padding: 10px 14px; margin: 0 0 12px; }
+legend { font-size: 13px; color: #7a7180; padding: 0 4px; }
+.row { display: flex; align-items: center; gap: 8px; margin: 10px 2px; font-size: 15px; }
+.row.between { justify-content: space-between; }
+#share { width: min(420px, calc(100% - 24px)); }
+.share-body { padding: 12px; }
+.share-body img { width: 100%; border-radius: 12px; display: block; margin-bottom: 10px; }

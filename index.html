@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#221c27" />
+    <title>飞镖去旅行 · 中国版</title>
+    <meta name="description" content="往上滑动投出飞镖，扎中中国地图上的哪座城市，就去哪里旅行！" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="stage"></div>
+
+    <div id="loading">正在把中国地图贴到飞镖靶上…</div>
+
+    <div class="credit">地图：© 阿里云 DataV.GeoAtlas</div>
+
+    <div class="hud" id="hud">
+      <div class="badge">已解锁 <b id="unlocked">0</b> / <span id="total">0</span></div>
+      <button class="icon-btn" id="btn-settings" aria-label="设置">⚙︎</button>
+    </div>
+
+    <div class="hint" id="hint" aria-hidden="true">
+      <svg class="hint-arrow" viewBox="0 0 40 150"><path d="M20 145 V12" stroke="#fff" stroke-width="4" stroke-dasharray="9 8" fill="none" stroke-linecap="round"/><path d="M8 24 L20 8 L32 24" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="hint-hand">👆</div>
+      <div class="hint-text">手指往上滑，投出飞镖</div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="result" id="result" hidden>
+      <div class="title-block">
+        <h1 id="r-name">湖州市</h1>
+        <div id="r-prov">浙江省</div>
+      </div>
+      <div class="card">
+        <p id="r-summary">…</p>
+        <div class="actions">
+          <a class="btn white" id="btn-baike" target="_blank" rel="noopener">打开百度百科</a>
+          <button class="btn red" id="btn-again">再投一次</button>
+          <button class="btn black" id="btn-share">分享</button>
+        </div>
+        <div class="foot">简介来自维基百科（CC BY-SA）</div>
+      </div>
+    </div>
+
+    <dialog id="settings">
+      <form method="dialog">
+        <h2>设置</h2>
+        <fieldset>
+          <legend>手抖程度</legend>
+          <label><input type="radio" name="diff" value="easy" /> 简单</label>
+          <label><input type="radio" name="diff" value="normal" /> 普通</label>
+          <label><input type="radio" name="diff" value="hard" /> 困难</label>
+        </fieldset>
+        <label class="row"><input type="checkbox" id="opt-sound" /> 音效</label>
+        <div class="row between">
+          <span>已解锁 <b id="s-unlocked">0</b> 个城市</span>
+          <button type="button" class="btn small" id="btn-clear">清空记录</button>
+        </div>
+        <button class="btn red wide" value="close">好的</button>
+      </form>
+    </dialog>
+
+    <dialog id="share">
+      <div class="share-body">
+        <img id="share-img" alt="分享图" />
+        <div class="actions">
+          <a class="btn white" id="share-download" download="飞镖去旅行.png">下载图片</a>
+          <button class="btn red" id="share-native">分享给朋友</button>
+          <button class="btn black" id="share-close">关闭</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
